@@ -78,20 +78,21 @@ loaded via a namespace (and not attached):
 [33] reshape_0.8.9      pkgconfig_2.0.3
 ```
 
+## Data dependencies
+
++ The pipeline for the meta-analysis of Alzheimers Diseases requires 
+    - [AD_Zscores_Meta.txt]() (1.8GB)
+    - [topcS2GGene_allVariants.csv]() (143MB), and 
+    - [pre-computed knockoff statistics]() (15GB) (please see **Knockoff generation** section below for details)
+as inputs. Please download the files and put them in the folder `ghostknockoff-gwas-reproducibility/data`.
++ Note the primary pipeline implemented in `GKL_RunAnalysis_All.R` additionally requires as input a list of typed present on the UK Biobank genotyping chip. At the moment, this input file is *hard coded* into the source code, because we are not sure if we can distribute the list of typed variants freely. 
+
+
 ## Knockoff generation
 
 + Processing of LD panels (including downloading and importing the data matrices) is carried out by an independent software [EasyLD.jl](https://github.com/biona001/EasyLD.jl).
 + Knockoff optimization problem was carried out by [Knockoffs.jl](https://github.com/biona001/Knockoffs.jl). 
 + Note that in our final software release, pre-computed knockoff statistics will be made available for download, so users will not have to manually install `EasyLD.jl` nor `Knockoffs.jl` to carry out this step.
-
-## Data dependencies
-
-+ The pipeline for the meta-analysis of Alzheimers Diseases requires 
-    -[AD_Zscores_Meta.txt]() (1.8GB)
-    -[topcS2GGene_allVariants.csv]() (143MB), and 
-    -[pre-computed knockoff statistics]() (15GB)
-as inputs. Please download the files and put them in the folder `ghostknockoff-gwas-reproducibility/data`.
-+ Note the primary pipeline implemented in `GKL_RunAnalysis_All.R` additionally requires as input a list of typed present on the UK Biobank genotyping chip. At the moment, this input file is *hard coded* into the source code, because we are not sure if we can distribute the list of typed variants freely. 
 
 ## Contact
 
