@@ -146,7 +146,7 @@ sigma_stats<-c()
 extreme_stats<-c()
 heritability<-c()
 
-for(initial.chr in 21:22){
+for(initial.chr in 1:22){
   print(paste0('chr',initial.chr))
   
   #KF.dir<-paste0('/oak/stanford/groups/zihuai/pan_ukb_group_knockoffs/maxent_hc/chr',initial.chr,'/')

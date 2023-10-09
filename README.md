@@ -85,8 +85,7 @@ loaded via a namespace (and not attached):
     - [topcS2GGene_allVariants.csv]() (143MB), and 
     - [pre-computed knockoff statistics]() (15GB) (please see **Knockoff generation** section below for details)
 as inputs. Please download the files and put them in the folder `ghostknockoff-gwas-reproducibility/data`.
-+ Note the primary pipeline implemented in `GKL_RunAnalysis_All.R` additionally requires as input a list of typed present on the UK Biobank genotyping chip. At the moment, this input file is *hard coded* into the source code, because we are not sure if we can distribute the list of typed variants freely. 
-
++ Note the primary pipeline implemented in `GKL_RunAnalysis_All.R` additionally requires as input a list of typed SNPs present on the UK Biobank genotyping chip. At the moment, this input file is *hard coded* into the source code, because we are not sure if we can distribute the list of typed variants freely. 
 
 ## Knockoff generation
 
