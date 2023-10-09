@@ -86,7 +86,11 @@ loaded via a namespace (and not attached):
 
 ## Data dependencies
 
-+ The pipeline for the meta-analysis of Alzheimers Diseases requires [AD_Zscores_Meta.txt]() (1.8GB) and [topcS2GGene_allVariants.csv]() as inputs. Please download the files and put them in the folder `ghostknockoff-gwas-reproducibility/data`.
++ The pipeline for the meta-analysis of Alzheimers Diseases requires 
+    -[AD_Zscores_Meta.txt]() (1.8GB)
+    -[topcS2GGene_allVariants.csv]() (143MB), and 
+    -[pre-computed knockoff statistics]() (15GB)
+as inputs. Please download the files and put them in the folder `ghostknockoff-gwas-reproducibility/data`.
 + Note the primary pipeline implemented in `GKL_RunAnalysis_All.R` additionally requires as input a list of typed present on the UK Biobank genotyping chip. At the moment, this input file is *hard coded* into the source code, because we are not sure if we can distribute the list of typed variants freely. 
 
 ## Contact
