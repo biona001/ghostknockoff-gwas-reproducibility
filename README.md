@@ -7,22 +7,23 @@ Note that code here is *purely for review purposes*. We are preparing a more rob
 ## Example: Running the Alzheimers Diseases analyses
 
 ```shell
-$ Rscript --vanilla GKL_RunAnalysis_All.R arg1 arg2 arg3 arg4 arg5
+$ Rscript --vanilla GKL_RunAnalysis_All.R arg1 arg2 arg3 arg4 arg5 arg6
 ```
 where 
-+ `arg1`: study number (integer between 1 to 20 representing different Alzhimers disease studies)
-+ `arg2`: path to Z score file which includes Z scores as well as the chr/pos and ref/alt alleles
-+ `arg3`: path to summary statistics file for the different AD studies (in particular, including sample size information)
-+ `arg4`: path to the cS2G file, which maps each SNP to the closet gene
-+ `arg5`: Output directory
++ `arg1`: Integer between 1 to 11 representing different Alzhimers disease studies. The first 10 studies are summarized in `data/SummaryStatInfo.txt` while study 11 is a meta-analysis of the 10 studies.
++ `arg2`: path to pre-computed knockoff statistics (see item 1 under [Data Dependencies](https://github.com/biona001/ghostknockoff-gwas-reproducibility#data-dependencies))
++ `arg3`: path to Z score file which includes Z scores as well as the chr/pos and ref/alt alleles (see item 2 under [Data Dependencies](https://github.com/biona001/ghostknockoff-gwas-reproducibility#data-dependencies))
++ `arg4`: path to summary statistics file for the different AD studies (in particular, including sample size information)
++ `arg5`: path to the cS2G file, which maps each SNP to the closet gene (see item 3 under [Data Dependencies](https://github.com/biona001/ghostknockoff-gwas-reproducibility#data-dependencies))
++ `arg6`: Output directory
 
 For example, on the Sherlock cluster, one can execute:
 
 ```shell
-$ Rscript --vanilla GKL_RunAnalysis_All.R 1 /oak/stanford/groups/zihuai/ESGWAS_lasso/Z_scores/AD_meta/AD_Zscores_Meta.txt /oak/stanford/groups/zihuai/ESGWAS_lasso/AD_Analysis/SummaryStatInfo.txt /oak/stanford/groups/zihuai/XinranQi/cS2G_UKBB/topcS2G_allVariants/topcS2GGene_allVariants.csv /scratch/users/bbchu/AD_meta/Results/
+$ Rscript --vanilla GKL_RunAnalysis_All.R 11 /oak/stanford/groups/zihuai/pan_ukb_group_knockoffs/EUR /oak/stanford/groups/zihuai/ESGWAS_lasso/Z_scores/AD_meta/AD_Zscores_Meta.txt /oak/stanford/groups/zihuai/ESGWAS_lasso/AD_Analysis/SummaryStatInfo.txt /oak/stanford/groups/zihuai/XinranQi/cS2G_UKBB/topcS2G_allVariants/topcS2GGene_allVariants.csv /scratch/users/bbchu/AD_meta/Results
 ```
 
-## Dependnecies (concise)
+## Dependencies
 
 The pipeline was tested on Stanford's Sherlock cluster which loads the following modules 
 + `R/4.0.2`
@@ -35,7 +36,7 @@ The pipeline was tested on Stanford's Sherlock cluster which loads the following
 The main GhostBasil pipeline is implemented in the `GKL_RunAnalysis_All.R` file, which depends on the following `R` packages
 
 + `data.table` v1.14.8
-+ `ghostbasil` v0.1.3 (This is currently not publicaly available)
++ `ghostbasil` v0.1.3
 + `Matrix` v1.6-0
 + `susieR` 0.12.35
 + `rhdf5` v2.34.0
@@ -80,12 +81,22 @@ loaded via a namespace (and not attached):
 
 ## Data dependencies
 
-+ The pipeline for the meta-analysis of Alzheimers Diseases requires 
-    - [AD_Zscores_Meta.txt]() (1.8GB)
-    - [topcS2GGene_allVariants.csv]() (143MB), and 
-    - [pre-computed knockoff statistics]() (15GB) (please see **Knockoff generation** section below for details)
-as inputs. Please download the files and put them in the folder `ghostknockoff-gwas-reproducibility/data`.
-+ Note the primary pipeline implemented in `GKL_RunAnalysis_All.R` additionally requires as input a list of typed SNPs present on the UK Biobank genotyping chip. At the moment, this input file is *hard coded* into the source code, because we are not sure if we can distribute the list of typed variants freely. 
+Please [download this data](https://drive.google.com/uc?export=download&id=1APM7X-TzLHQGkStDC8wEJjRIpuj04oVm) and unzip it:
+```
+unzip data.zip
+```
+After unzipping, you will find the following files:
+- `EUR` directory (9.3G) contains pre-computed knockoff statistics stored in `.h5` format as well as summaries for each block (please see **Knockoff generation** section below for details)
+- `AD_Zscores_Meta.txt` (1.8GB) contains study-specific Z scores for each SNP as well as basic allelic information (CHR/POS/REF/ALT/...etc)
+- `topcS2GGene_allVariants.csv` (143MB) contains the nearest gene for each SNP
+- `SummaryStatInfo.txt` (4KB) contains summaries for the 10 Alzheimer Disease studies (sample size, human genome build...etc)
+
+**Notes:**
++ Data is stored on google drive and does NOT support `wget`. Please download it manually on the browser. Alternatively, you can try installing [gdown](https://stackoverflow.com/questions/25010369/wget-curl-large-file-from-google-drive).
++ Because the files are large, sometimes unzipping throws a warning `error: invalid zip file with overlapped components (possible zip bomb)`. Please try with 
+```
+UNZIP_DISABLE_ZIPBOMB_DETECTION=TRUE unzip data.zip
+```
 
 ## Knockoff generation
 
