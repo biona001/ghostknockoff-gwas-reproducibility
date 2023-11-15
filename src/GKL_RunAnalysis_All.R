@@ -1,9 +1,18 @@
 args = commandArgs(TRUE)
 replicate = as.numeric(args[1])
-zscore.file = args[2]
-SummaryStat.info.file = args[3]
-cS2G.file = args[4]
-out.dir = args[5]
+knockoff.dir = args[2]
+zscore.file = args[3]
+SummaryStat.info.file = args[4]
+cS2G.file = args[5]
+out.dir = args[6]
+
+# for testing
+# replicate = 1
+# zscore.file = "/oak/stanford/groups/zihuai/ESGWAS_lasso/Z_scores/AD_meta/AD_Zscores_Meta.txt"
+# knockoff.dir = "/oak/stanford/groups/zihuai/pan_ukb_group_knockoffs/EUR"
+# SummaryStat.info.file = "/oak/stanford/groups/zihuai/ESGWAS_lasso/AD_Analysis/SummaryStatInfo.txt"
+# cS2G.file = "/oak/stanford/groups/zihuai/XinranQi/cS2G_UKBB/topcS2G_allVariants/topcS2GGene_allVariants.csv"
+# out.dir = "/scratch/users/bbchu/AD_meta/Results"
 
 MK.statistic<-function (T_0,T_k,method='median'){
   T_0<-as.matrix(T_0);T_k<-as.matrix(T_k)
@@ -56,7 +65,8 @@ MK.q.byStat<-function (kappa,tau,M,clusters=1:length(kappa),Rej.Bound=10000){
 
 #ancestry = c('EUR','AFR','EAS')[as.numeric(args[2])]
 
-print('start; July 2023')
+print('July 2023 version of code. Ran on:')
+print(Sys.time())
 
 #ml R/4.0.2 cmake/3.24.2 harfbuzz/1.4.8 fribidi/1.0.12 libgit2/1.1.0 openssl/3.0.7
 #install.packages("devtools", repos='http://cran.us.r-project.org', Ncpus=4)
@@ -94,7 +104,7 @@ SummaryStat.info<-read.table(SummaryStat.info.file,header=T,sep='\t')
 if(replicate<=10){N.effect<-round(SummaryStat.info[replicate,'SampleSize'])}else{
   N.effect<-506200 # effective sample size
 }
-print(N.effect)
+print(paste0("N.effect = ", N.effect))
 
 #lasso path
 lambda_max <- max(abs(Zscores[,'Z']/sqrt(N.effect)))
@@ -104,18 +114,19 @@ lambdapath <- round(exp(seq(log(lambda_max), log(lambda_max*epsilon),
                             length.out = K)), digits = 10)
 
 # match reference panel variants
-chr<-Zscores[,'hg19.chr']
-pos<-Zscores[,'hg19.pos']
-p.chr<-c()
-for(j in 1:22){
-  print(j)
-  bim.filename<-paste0('/oak/stanford/groups/zihuai/UKB_data/genotyped_call/', "ukb_cal_chr", j, "_v2.bim")
-  bim.data<-read.table(bim.filename)
-  tested.pos<-as.matrix(bim.data[,4])
-  p.chr<-c(p.chr,sum(pos[chr==j]%in%tested.pos))
-}
-p.genome<-sum(p.chr)
-#p.genome<-784256 # currently this is the total number of UKB typed variants
+# Ben's note: hard coded path to UKB are commented out for review purposes
+# chr<-Zscores[,'hg19.chr']
+# pos<-Zscores[,'hg19.pos']
+# p.chr<-c()
+# for(j in 1:22){
+#   print(j)
+#   bim.filename<-paste0('/oak/stanford/groups/zihuai/UKB_data/genotyped_call/', "ukb_cal_chr", j, "_v2.bim")
+#   bim.data<-read.table(bim.filename)
+#   tested.pos<-as.matrix(bim.data[,4])
+#   p.chr<-c(p.chr,sum(pos[chr==j]%in%tested.pos))
+# }
+# p.genome<-sum(p.chr)
+p.genome<-647763 # total number of UKB typed variants
 
 #expectation of extreme values
 lambda.sample<-c()
@@ -150,8 +161,9 @@ for(initial.chr in 1:22){
   print(paste0('chr',initial.chr))
   
   #KF.dir<-paste0('/oak/stanford/groups/zihuai/pan_ukb_group_knockoffs/maxent_hc/chr',initial.chr,'/')
-  KF.dir<-paste0('/oak/stanford/groups/zihuai/pan_ukb_group_knockoffs/EUR/chr',initial.chr,'/')
+  # KF.dir<-paste0('/oak/stanford/groups/zihuai/pan_ukb_group_knockoffs/EUR/chr',initial.chr,'/')
   #KF.dir<-paste0('/oak/stanford/groups/zihuai/pan_ukb_group_knockoffs/EUR_hc_completeLinkage/chr',initial.chr,'/')
+  KF.dir<-paste0(file.path(knockoff.dir, paste0('chr', initial.chr)))
   KF.SLD.names<-list.files(KF.dir,pattern = 'LD')#paste0('SLD',sub('.txt','',sub('Info','',KF.info.names)),'.gds')
   KF.info.names<-paste0('Info',sub('.h5','',sub('LD','',KF.SLD.names)),'.csv')#list.files(KF.dir,pattern = 'Info')
   N_set<-length(KF.info.names)
@@ -164,15 +176,15 @@ for(initial.chr in 1:22){
     results<-c()
     #load h5 data
     #KF.data = H5Fopen(paste0(KF.dir,KF.SLD.names[set]))
-    D<-h5read(paste0(KF.dir,KF.SLD.names[set]),'D')#KF.data$D
-    S<-h5read(paste0(KF.dir,KF.SLD.names[set]),'S')#KF.data$S
-    Sigma<-h5read(paste0(KF.dir,KF.SLD.names[set]),'Sigma')#KF.data$Sigma
-    group_reps<-h5read(paste0(KF.dir,KF.SLD.names[set]),'group_reps')#KF.data$group_reps
-    SigmaInv<-h5read(paste0(KF.dir,KF.SLD.names[set]),'SigmaInv')#KF.data$SigmaInv
-    groups<-h5read(paste0(KF.dir,KF.SLD.names[set]),'groups')#KF.data$groups
+    D<-h5read(file.path(KF.dir,KF.SLD.names[set]),'D')#KF.data$D
+    S<-h5read(file.path(KF.dir,KF.SLD.names[set]),'S')#KF.data$S
+    Sigma<-h5read(file.path(KF.dir,KF.SLD.names[set]),'Sigma')#KF.data$Sigma
+    group_reps<-h5read(file.path(KF.dir,KF.SLD.names[set]),'group_reps')#KF.data$group_reps
+    SigmaInv<-h5read(file.path(KF.dir,KF.SLD.names[set]),'SigmaInv')#KF.data$SigmaInv
+    groups<-h5read(file.path(KF.dir,KF.SLD.names[set]),'groups')#KF.data$groups
     #H5Fclose(KF.data)
     
-    KF.info<-as.data.frame(fread(paste0(KF.dir,KF.info.names[set])))
+    KF.info<-as.data.frame(fread(file.path(KF.dir,KF.info.names[set])))
     if(sum(!is.na(KF.info[,paste0('pos_',hg)]))==0){next}
     chr<-KF.info[!is.na(KF.info[,'chr']),'chr'][1]
     pos<-KF.info[,paste0('pos_',hg)]
@@ -503,7 +515,7 @@ temp.heritability<-c(NA,NA,NA,NA,1-sigma^2,lambda)
 heritability<-rbind(heritability,temp.heritability)
 colnames(heritability)<-c('chr','start','end','LD.shrinkage.lambda','heritability','lasso.lambda')
 
-temp.filename<-paste0(out.dir,'results_AD_Meta_All_heritability',replicate,'.txt')
+temp.filename<-file.path(out.dir, paste0('results_AD_Meta_All_heritability',replicate,'.txt'))
 write.table(heritability,temp.filename,col.names=T,row.names=F,sep='\t',quote=F)
 
 #find beta corresponding to optimal lambda
@@ -566,7 +578,7 @@ results.all[results.all[,'variant.q.lasso']<=0.10,]
 
 results.all[results.all[,'variant.q.lasso']<=0.10,c('KF.Z','p.marginal','variant.q.lasso')]
 
-temp.filename<-paste0(out.dir,'results_AD_Meta_All_',replicate,'.txt')
+temp.filename<-file.path(out.dir, paste0('results_AD_Meta_All_',replicate,'.txt'))
 write.table(results.all,temp.filename,col.names=T,row.names=F,sep='\t',quote=F)
 
 print('done!')
