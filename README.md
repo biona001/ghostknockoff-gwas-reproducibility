@@ -10,8 +10,8 @@ Note that code here is *purely for review purposes*. We are preparing a more rob
 
 + [Installation](https://github.com/biona001/ghostknockoff-gwas-reproducibility#installation)
     - [Installing `R` dependencies](https://github.com/biona001/ghostknockoff-gwas-reproducibility#1-installing-r-dependencies)
-    - [Download Required Data](https://github.com/biona001/ghostknockoff-gwas-reproducibility#2-download-required-data)
-    - [Cloning the current repository](https://github.com/biona001/ghostknockoff-gwas-reproducibility#3-cloning-the-current-repository)
+    - [Cloning the current repository](https://github.com/biona001/ghostknockoff-gwas-reproducibility#2-cloning-the-current-repository)
+    - [Download Required Data](https://github.com/biona001/ghostknockoff-gwas-reproducibility#3-download-required-data)
 + [Example: Running the Alzheimers Diseases analyses](https://github.com/biona001/ghostknockoff-gwas-reproducibility#example-running-the-alzheimers-diseases-analyses)
 + [Example Output](https://github.com/biona001/ghostknockoff-gwas-reproducibility#example-output)
 + [Full `sessionInfo()` output](https://github.com/biona001/ghostknockoff-gwas-reproducibility#full-sessioninfo-output)
@@ -63,7 +63,13 @@ $ R
 
 For complete list of dependencies, see [full sessionInfo() output](https://github.com/biona001/ghostknockoff-gwas-reproducibility#full-sessioninfo-output)
 
-### 2. Download Required Data
+### 2. Cloning the current repository
+
+```
+git clone https://github.com/biona001/ghostknockoff-gwas-reproducibility.git
+```
+
+### 3. Download Required Data
 
 Please [download this data](https://drive.google.com/file/d/1_ajlxFWE2MCSgBXDgDbeZh9Lq721WANA/view?usp=drive_link) (8.2GB) and unzip it:
 ```
@@ -81,12 +87,6 @@ After unzipping, you will find the following files in the `data` directory:
 - `SummaryStatInfo.txt` (4KB) contains summaries for the 10 Alzheimer Disease studies (sample size, human genome build...etc)
 - `refGene_hg38.txt` (24MB) contains more gene information necessary for making Manhattan plots
 
-### 3. Cloning the current repository
-
-```
-git clone https://github.com/biona001/ghostknockoff-gwas-reproducibility.git
-```
-
 ## Example: Running the Alzheimers Diseases analyses
 
 The main GhostBasil pipeline is implemented in `src/GKL_RunAnalysis_All.R` file. It can be ran via:
@@ -96,10 +96,10 @@ $ Rscript --vanilla GKL_RunAnalysis_All.R arg1 arg2 arg3 arg4 arg5 arg6
 ```
 where 
 + `arg1`: Integer between 1 to 11 representing different Alzhimers disease studies. The first 10 studies are summarized in `data/SummaryStatInfo.txt` while study 11 is a meta-analysis of the 10 studies.
-+ `arg2`: path to pre-computed knockoff statistics (see item 1 under [Download Required Data](https://github.com/biona001/ghostknockoff-gwas-reproducibility#2-download-required-data))
-+ `arg3`: path to Z score file which includes Z scores as well as the chr/pos and ref/alt alleles (see item 2 under [Download Required Data](https://github.com/biona001/ghostknockoff-gwas-reproducibility#2-download-required-data))
-+ `arg4`: path to summary statistics file for the different AD studies (see item 3 under [Download Required Data](https://github.com/biona001/ghostknockoff-gwas-reproducibility#2-download-required-data))
-+ `arg5`: path to the cS2G file, which maps each SNP to the closet gene (see item 4 under [Download Required Data](https://github.com/biona001/ghostknockoff-gwas-reproducibility#2-download-required-data))
++ `arg2`: path to pre-computed knockoff statistics (see item 1 under [Download Required Data](https://github.com/biona001/ghostknockoff-gwas-reproducibility#3-download-required-data))
++ `arg3`: path to Z score file which includes Z scores as well as the chr/pos and ref/alt alleles (see item 2 under [Download Required Data](https://github.com/biona001/ghostknockoff-gwas-reproducibility#3-download-required-data))
++ `arg4`: path to summary statistics file for the different AD studies (see item 3 under [Download Required Data](https://github.com/biona001/ghostknockoff-gwas-reproducibility#3-download-required-data))
++ `arg5`: path to the cS2G file, which maps each SNP to the closet gene (see item 4 under [Download Required Data](https://github.com/biona001/ghostknockoff-gwas-reproducibility#3-download-required-data))
 + `arg6`: Output directory
 
 For example, to run the meta-analysis GWAS result for Alzheimers Disease:
@@ -121,7 +121,7 @@ where
 + `arg1`: Integer between 1 to 11, this should be the first argument you used for running `GKL_RunAnalysis_All.R`
 + `arg2`: path to the original Z score file (i.e. this is argument 3 for `GKL_RunAnalysis_All.R`)
 + `arg3`: **Directory** to the output file of `GKL_RunAnalysis_All.R`, i.e. (i.e. this is argument 6 for `GKL_RunAnalysis_All.R`)
-+ `arg4`: Reference gene file, this is the last downloaded item under [Download Required Data](https://github.com/biona001/ghostknockoff-gwas-reproducibility#2-download-required-data)
++ `arg4`: Reference gene file, this is the last downloaded item under [Download Required Data](https://github.com/biona001/ghostknockoff-gwas-reproducibility#3-download-required-data)
 + `arg5`: Output directory
 
 For example, one can execute:
