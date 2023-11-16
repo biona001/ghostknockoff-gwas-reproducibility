@@ -83,8 +83,8 @@ UNZIP_DISABLE_ZIPBOMB_DETECTION=TRUE unzip data.zip
 After unzipping, you will find the following files in the `data` directory:
 - `EUR` directory (9.3G) contains pre-computed knockoff statistics (for EUR ancestry) stored in `.h5` format, as well as summaries for each block (please see [Knockoff generation](https://github.com/biona001/ghostknockoff-gwas-reproducibility#knockoff-generation) section below for details)
 - `AD_Zscores_Meta.txt` (1.8GB) contains Z-scores and basic allelic information for 11 Alzheimer Disease studies (10 studies + 1 meta-analysis study which aggregates the 10 studies)
-- `topcS2GGene_allVariants.csv` (143MB) contains the nearest gene for each SNP
 - `SummaryStatInfo.txt` (4KB) contains summaries for the 10 Alzheimer Disease studies (sample size, human genome build...etc)
+- `topcS2GGene_allVariants.csv` (143MB) contains the nearest gene for each SNP
 - `refGene_hg38.txt` (24MB) contains more gene information necessary for making Manhattan plots
 
 ## Example: Running the Alzheimers Diseases analyses
@@ -105,7 +105,6 @@ where
 For example, to run the meta-analysis GWAS result for Alzheimers Disease:
 
 ```shell
-$ mkdir Results
 $ Rscript --vanilla GKL_RunAnalysis_All.R 11 /scratch/users/bbchu/AD_meta/data/EUR /scratch/users/bbchu/AD_meta/data/AD_Zscores_Meta.txt /scratch/users/bbchu/AD_meta/data/SummaryStatInfo.txt /scratch/users/bbchu/AD_meta/data/topcS2GGene_allVariants.csv /scratch/users/bbchu/AD_meta/Results
 ```
 
