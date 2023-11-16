@@ -2,6 +2,8 @@
 
 This repo contains source codes used in the paper **In silico identification of putative causal genetic variants** by He et al. 
 
+![fig1](Results/Rect_Manhtn.GhostKnockoffLasso_group_Meta-analysis.jpg)
+
 Note that code here is *purely for review purposes*. We are preparing a more robust and computationally efficient pipeline in an alternate repo which will be available within the next 1-2 months. The final repo will contain a software pipeline that is more general, easy to install, user-friendly, and scalable than the source code here. 
 
 ## Installation
@@ -9,11 +11,12 @@ Note that code here is *purely for review purposes*. We are preparing a more rob
 To run the provided examples, one need to 
 1. Install all required `R` packages
 2. Download pre-computed knockoff statistics
+
 These steps are described below. 
 
 ### Installing `R` dependencies
 
-To run the provided scripts, we need to first install the [ghostbasil](https://github.com/JamesYang007/ghostbasil) `R` package. This involves:
+To run the provided scripts, we need to first install the [ghostbasil](https://github.com/JamesYang007/ghostbasil) package in `R`, along with other required packages. This involves:
 
 1. Clone the repository 
 ```
@@ -53,23 +56,26 @@ Please [download this data](https://drive.google.com/file/d/1_ajlxFWE2MCSgBXDgDb
 ```
 unzip data.zip
 ```
-After unzipping, you will find the following files:
-- `EUR` directory (9.3G) contains pre-computed knockoff statistics (for EUR ancestry) stored in `.h5` format as well as summaries for each block (please see [Knockoff generation](https://github.com/biona001/ghostknockoff-gwas-reproducibility#knockoff-generation) section below for details)
-- `AD_Zscores_Meta.txt` (1.8GB) contains study-specific Z scores for each SNP as well as basic allelic information (CHR/POS/REF/ALT/...etc)
-- `topcS2GGene_allVariants.csv` (143MB) contains the nearest gene for each SNP
-- `SummaryStatInfo.txt` (4KB) contains summaries for the 10 Alzheimer Disease studies (sample size, human genome build...etc)
-- `refGene_hg38.txt` (24MB) contains more gene information necessary for making Manhattan plots
-
-**Notes:**
-+ Data is stored on google drive and does NOT support `wget`. Please download it manually on the browser. Alternatively, you can try installing [gdown](https://stackoverflow.com/questions/25010369/wget-curl-large-file-from-google-drive).
-+ Because the files are large, sometimes unzipping throws a warning `error: invalid zip file with overlapped components (possible zip bomb)`. Please try with 
+If unzipping throws a warning `error: invalid zip file with overlapped components (possible zip bomb)`, then try again with 
 ```
 UNZIP_DISABLE_ZIPBOMB_DETECTION=TRUE unzip data.zip
 ```
 
+After unzipping, you will find the following files in the `data` directory:
+- `EUR` directory (9.3G) contains pre-computed knockoff statistics (for EUR ancestry) stored in `.h5` format, as well as summaries for each block (please see [Knockoff generation](https://github.com/biona001/ghostknockoff-gwas-reproducibility#knockoff-generation) section below for details)
+- `AD_Zscores_Meta.txt` (1.8GB) contains Z-scores and basic allelic information for 11 Alzheimer Disease studies (10 studies + 1 meta-analysis study which aggregates the 10 studies)
+- `topcS2GGene_allVariants.csv` (143MB) contains the nearest gene for each SNP
+- `SummaryStatInfo.txt` (4KB) contains summaries for the 10 Alzheimer Disease studies (sample size, human genome build...etc)
+- `refGene_hg38.txt` (24MB) contains more gene information necessary for making Manhattan plots
+
 ## Example: Running the Alzheimers Diseases analyses
 
-The main GhostBasil pipeline is implemented in the `GKL_RunAnalysis_All.R` file. It can be ran via:
+First clone this repository:
+```
+git clone https://github.com/biona001/ghostknockoff-gwas-reproducibility.git
+```
+
+The main GhostBasil pipeline is implemented in `src/GKL_RunAnalysis_All.R` file. It can be ran via:
 
 ```shell
 $ Rscript --vanilla GKL_RunAnalysis_All.R arg1 arg2 arg3 arg4 arg5 arg6
@@ -101,7 +107,7 @@ where
 + `arg1`: Integer between 1 to 11, this should be the first argument you used for running `GKL_RunAnalysis_All.R`
 + `arg2`: path to the original Z score file (i.e. this is argument 3 for `GKL_RunAnalysis_All.R`)
 + `arg3`: **Directory** to the output file of `GKL_RunAnalysis_All.R`, i.e. (i.e. this is argument 6 for `GKL_RunAnalysis_All.R`)
-+ `arg4`: Reference gene file, this is the last downloaded item under [Download Required Data](https://github.com/biona001/
++ `arg4`: Reference gene file, this is the last downloaded item under [Download Required Data](https://github.com/biona001/ghostknockoff-gwas-reproducibility#download-required-data)
 + `arg5`: Output directory
 
 For example, one can execute:
@@ -168,9 +174,12 @@ loaded via a namespace (and not attached):
 
 ## Knockoff generation
 
+Because pre-computed knockoff statistics are available for download, users do not have to manually install `EasyLD.jl` nor `Knockoffs.jl` to carry out this step.
+
 + Processing of LD panels (including downloading and importing the data matrices) is carried out by an independent software [EasyLD.jl](https://github.com/biona001/EasyLD.jl).
 + Knockoff optimization problem was carried out by [Knockoffs.jl](https://github.com/biona001/Knockoffs.jl). 
-+ Note that in our final software release, pre-computed knockoff statistics will be made available for download, so users will not have to manually install `EasyLD.jl` nor `Knockoffs.jl` to carry out this step.
+
+If one wishes to carry out customized knockoff analysis pipeline, feel free to reach out to us for assistance. 
 
 ## Contact
 
