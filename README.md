@@ -9,7 +9,7 @@ Note that code here is *purely for review purposes*. We are preparing a more rob
 To run the provided examples, one need to 
 1. Install all required `R` packages
 2. Download pre-computed knockoff statistics
-They steps are described below. 
+These steps are described below. 
 
 ### Installing `R` dependencies
 
@@ -35,7 +35,7 @@ $ R
 > install()
 ```
 
-Please also install the following `R` packages
+5. Please also install the following `R` packages
 
 + `data.table`
 + `Matrix`
@@ -45,17 +45,20 @@ Please also install the following `R` packages
 + `dplyr`
 + `CMplot`
 
+For complete list of dependencies, see [full sessionInfo() output](https://github.com/biona001/ghostknockoff-gwas-reproducibility#full-sessioninfo-output)
+
 ### Download Required Data
 
-Please [download this data](https://drive.google.com/file/d/1_ajlxFWE2MCSgBXDgDbeZh9Lq721WANA/view?usp=drive_link) and unzip it:
+Please [download this data](https://drive.google.com/file/d/1_ajlxFWE2MCSgBXDgDbeZh9Lq721WANA/view?usp=drive_link) (8.2GB) and unzip it:
 ```
 unzip data.zip
 ```
 After unzipping, you will find the following files:
-- `EUR` directory (9.3G) contains pre-computed knockoff statistics (for EUR ancestry) stored in `.h5` format as well as summaries for each block (please see **Knockoff generation** section below for details)
+- `EUR` directory (9.3G) contains pre-computed knockoff statistics (for EUR ancestry) stored in `.h5` format as well as summaries for each block (please see [Knockoff generation](https://github.com/biona001/ghostknockoff-gwas-reproducibility#knockoff-generation) section below for details)
 - `AD_Zscores_Meta.txt` (1.8GB) contains study-specific Z scores for each SNP as well as basic allelic information (CHR/POS/REF/ALT/...etc)
 - `topcS2GGene_allVariants.csv` (143MB) contains the nearest gene for each SNP
 - `SummaryStatInfo.txt` (4KB) contains summaries for the 10 Alzheimer Disease studies (sample size, human genome build...etc)
+- `refGene_hg38.txt` (24MB) contains more gene information necessary for making Manhattan plots
 
 **Notes:**
 + Data is stored on google drive and does NOT support `wget`. Please download it manually on the browser. Alternatively, you can try installing [gdown](https://stackoverflow.com/questions/25010369/wget-curl-large-file-from-google-drive).
@@ -65,6 +68,8 @@ UNZIP_DISABLE_ZIPBOMB_DETECTION=TRUE unzip data.zip
 ```
 
 ## Example: Running the Alzheimers Diseases analyses
+
+The main GhostBasil pipeline is implemented in the `GKL_RunAnalysis_All.R` file. It can be ran via:
 
 ```shell
 $ Rscript --vanilla GKL_RunAnalysis_All.R arg1 arg2 arg3 arg4 arg5 arg6
@@ -80,10 +85,40 @@ where
 For example, to run the meta-analysis GWAS result for Alzheimers Disease:
 
 ```shell
-$ Rscript --vanilla GKL_RunAnalysis_All.R 11 data/EUR data/AD_Zscores_Meta.txt data/SummaryStatInfo.txt data/topcS2GGene_allVariants.csv Results
+$ mkdir Results
+$ Rscript --vanilla GKL_RunAnalysis_All.R 11 /scratch/users/bbchu/AD_meta/data/EUR /scratch/users/bbchu/AD_meta/data/AD_Zscores_Meta.txt /scratch/users/bbchu/AD_meta/data/SummaryStatInfo.txt /scratch/users/bbchu/AD_meta/data/topcS2GGene_allVariants.csv /scratch/users/bbchu/AD_meta/Results
 ```
 
-## Dependencies
+Running the example above should produce a file `results_AD_Meta_All_11.txt` in the output directory which contains various knockoff statistics. 
+
+## Example Output
+
+We can generate Manhattan plots via
+```shell
+$ Rscript --vanilla GKL_Manhattan.R arg1 arg2 arg3 arg4 arg5
+```
+where 
++ `arg1`: Integer between 1 to 11, this should be the first argument you used for running `GKL_RunAnalysis_All.R`
++ `arg2`: path to the original Z score file (i.e. this is argument 3 for `GKL_RunAnalysis_All.R`)
++ `arg3`: **Directory** to the output file of `GKL_RunAnalysis_All.R`, i.e. (i.e. this is argument 6 for `GKL_RunAnalysis_All.R`)
++ `arg4`: Reference gene file, this is the last downloaded item under [Download Required Data](https://github.com/biona001/
++ `arg5`: Output directory
+
+For example, one can execute:
+
+```shell
+$ Rscript --vanilla GKL_Manhattan.R 11 /scratch/users/bbchu/AD_meta/data/AD_Zscores_Meta.txt /scratch/users/bbchu/AD_meta/Results /scratch/users/bbchu/AD_meta/data/refGene_hg38.txt /scratch/users/bbchu/AD_meta/Results
+```
+
+This will create several Manhattan plots similar to what was featured in our paper, e.g. 
+
+![fig1](Results/Rect_Manhtn.GhostKnockoffLasso_group_Meta-analysis.jpg)
+![fig2](Results/Rect_Manhtn.GhostKnockoffLassoSplit_group_Meta-analysis.jpg)
+![fig3](Results/Rect_Manhtn.GhostKnockoffMarginal_group_Meta-analysis.jpg)
+![fig4](Results/Rect_Manhtn.GhostKnockoffSusie_group_Meta-analysis.jpg)
+![fig5](Results/Rect_Manhtn.MarginalAssociationTest_Meta-analysis.jpg)
+
+## Full `sessionInfo()` output:
 
 The pipeline was tested on Stanford's Sherlock cluster which loads the following modules 
 + `R/4.0.2`
@@ -93,15 +128,7 @@ The pipeline was tested on Stanford's Sherlock cluster which loads the following
 + `libgit2/1.1.0`
 + `openssl/3.0.7`
 
-The main GhostBasil pipeline is implemented in the `GKL_RunAnalysis_All.R` file, which depends on the following `R` packages
-
-+ `data.table` v1.14.8
-+ `ghostbasil` v0.1.3
-+ `Matrix` v1.6-0
-+ `susieR` 0.12.35
-+ `rhdf5` v2.34.0
-
-## Full `sessionInfo()` output:
+The output of `sessionInfo()`:
 
 ```R
 > sessionInfo()

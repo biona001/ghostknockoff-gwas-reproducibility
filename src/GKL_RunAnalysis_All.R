@@ -157,7 +157,7 @@ sigma_stats<-c()
 extreme_stats<-c()
 heritability<-c()
 
-for(initial.chr in 1:22){
+for(initial.chr in 1:22){  
   print(paste0('chr',initial.chr))
   
   #KF.dir<-paste0('/oak/stanford/groups/zihuai/pan_ukb_group_knockoffs/maxent_hc/chr',initial.chr,'/')
@@ -171,8 +171,8 @@ for(initial.chr in 1:22){
   
   for(set in 1:N_set){
     t1<-proc.time()
-    print(set)
-    
+    print(paste0('chr',initial.chr,' set ', set, '/', N_set))
+
     results<-c()
     #load h5 data
     #KF.data = H5Fopen(paste0(KF.dir,KF.SLD.names[set]))
