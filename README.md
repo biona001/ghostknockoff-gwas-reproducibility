@@ -9,9 +9,9 @@ Note that code here is *purely for review purposes*. We are preparing a more rob
 ## Table of content
 
 + [Installation](https://github.com/biona001/ghostknockoff-gwas-reproducibility#installation)
-    - [Installing `R` dependencies](https://github.com/biona001/ghostknockoff-gwas-reproducibility#installing-r-dependencies)
-    - [Download Required Data](https://github.com/biona001/ghostknockoff-gwas-reproducibility#download-required-data)
-    - [Cloning the current repository](https://github.com/biona001/ghostknockoff-gwas-reproducibility#installing-r-dependencies)
+    - [Installing `R` dependencies](https://github.com/biona001/ghostknockoff-gwas-reproducibility#1-installing-r-dependencies)
+    - [Download Required Data](https://github.com/biona001/ghostknockoff-gwas-reproducibility#2-download-required-data)
+    - [Cloning the current repository](https://github.com/biona001/ghostknockoff-gwas-reproducibility#3-cloning-the-current-repository)
 + [Example: Running the Alzheimers Diseases analyses](https://github.com/biona001/ghostknockoff-gwas-reproducibility#example-running-the-alzheimers-diseases-analyses)
 + [Example Output](https://github.com/biona001/ghostknockoff-gwas-reproducibility#example-output)
 + [Full `sessionInfo()` output](https://github.com/biona001/ghostknockoff-gwas-reproducibility#full-sessioninfo-output)
