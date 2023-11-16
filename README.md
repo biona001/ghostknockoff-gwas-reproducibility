@@ -6,15 +6,28 @@ This repo contains source codes used in the paper **In silico identification of 
 
 Note that code here is *purely for review purposes*. We are preparing a more robust and computationally efficient pipeline in an alternate repo which will be available within the next 1-2 months. The final repo will contain a software pipeline that is more general, easy to install, user-friendly, and scalable than the source code here. 
 
+## Table of content
+
++ [Installation](https://github.com/biona001/ghostknockoff-gwas-reproducibility#installation)
+    - [Installing `R` dependencies](https://github.com/biona001/ghostknockoff-gwas-reproducibility#installing-r-dependencies)
+    - [Download Required Data](https://github.com/biona001/ghostknockoff-gwas-reproducibility#download-required-data)
+    - [Cloning the current repository](https://github.com/biona001/ghostknockoff-gwas-reproducibility#installing-r-dependencies)
++ [Example: Running the Alzheimers Diseases analyses](https://github.com/biona001/ghostknockoff-gwas-reproducibility#example-running-the-alzheimers-diseases-analyses)
++ [Example Output](https://github.com/biona001/ghostknockoff-gwas-reproducibility#example-output)
++ [Full `sessionInfo()` output](https://github.com/biona001/ghostknockoff-gwas-reproducibility#full-sessioninfo-output)
++ [Knockoff generation](https://github.com/biona001/ghostknockoff-gwas-reproducibility#knockoff-generation)
++ [Contact](https://github.com/biona001/ghostknockoff-gwas-reproducibility#contact)
+
 ## Installation
 
 To run the provided examples, one need to 
 1. Install all required `R` packages
 2. Download pre-computed knockoff statistics
+3. Clone the current repository
 
-These steps are described below. 
+Our updated pipeline, which will be available within 1-2 months, should make these steps more streamlined, efficient, and robust. 
 
-### Installing `R` dependencies
+### 1. Installing `R` dependencies
 
 To run the provided scripts, we need to first install the [ghostbasil](https://github.com/JamesYang007/ghostbasil) package in `R`, along with other required packages. This involves:
 
@@ -50,7 +63,7 @@ $ R
 
 For complete list of dependencies, see [full sessionInfo() output](https://github.com/biona001/ghostknockoff-gwas-reproducibility#full-sessioninfo-output)
 
-### Download Required Data
+### 2. Download Required Data
 
 Please [download this data](https://drive.google.com/file/d/1_ajlxFWE2MCSgBXDgDbeZh9Lq721WANA/view?usp=drive_link) (8.2GB) and unzip it:
 ```
@@ -68,12 +81,13 @@ After unzipping, you will find the following files in the `data` directory:
 - `SummaryStatInfo.txt` (4KB) contains summaries for the 10 Alzheimer Disease studies (sample size, human genome build...etc)
 - `refGene_hg38.txt` (24MB) contains more gene information necessary for making Manhattan plots
 
-## Example: Running the Alzheimers Diseases analyses
+### 3. Cloning the current repository
 
-First clone this repository:
 ```
 git clone https://github.com/biona001/ghostknockoff-gwas-reproducibility.git
 ```
+
+## Example: Running the Alzheimers Diseases analyses
 
 The main GhostBasil pipeline is implemented in `src/GKL_RunAnalysis_All.R` file. It can be ran via:
 
