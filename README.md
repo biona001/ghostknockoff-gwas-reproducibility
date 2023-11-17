@@ -132,9 +132,9 @@ $ Rscript --vanilla GKL_Manhattan.R 11 /scratch/users/bbchu/AD_meta/data/AD_Zsco
 This will create several Manhattan plots similar to what was featured in our paper, e.g. 
 
 ![fig1](Results/Rect_Manhtn.GhostKnockoffLasso_group_Meta-analysis.jpg)
-![fig2](Results/Rect_Manhtn.GhostKnockoffLassoSplit_group_Meta-analysis.jpg)
+<!-- ![fig2](Results/Rect_Manhtn.GhostKnockoffLassoSplit_group_Meta-analysis.jpg)
 ![fig3](Results/Rect_Manhtn.GhostKnockoffMarginal_group_Meta-analysis.jpg)
-![fig4](Results/Rect_Manhtn.GhostKnockoffSusie_group_Meta-analysis.jpg)
+![fig4](Results/Rect_Manhtn.GhostKnockoffSusie_group_Meta-analysis.jpg) -->
 ![fig5](Results/Rect_Manhtn.MarginalAssociationTest_Meta-analysis.jpg)
 
 ## Full `sessionInfo()` output:
