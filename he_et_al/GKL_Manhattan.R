@@ -14,11 +14,11 @@ ref_gene_file = args[4]
 out_dir = args[5]
 
 # for testing
-# replicate = 1
-# zscores_file = "/scratch/users/bbchu/AD_meta/data/AD_Zscores_Meta.txt"
-# input_dir = "/scratch/users/bbchu/AD_meta/Results"
-# ref_gene_file = "/scratch/users/bbchu/AD_meta/data/refGene_hg38.txt"
-# out_dir = "/scratch/users/bbchu/AD_meta/Results"
+# replicate = 11
+# zscores_file = "/home/groups/sabatti/.julia/dev/ghostknockoff-gwas-reproducibility/data/AD_Zscores_Meta.txt"
+# input_dir = "/home/groups/sabatti/.julia/dev/ghostknockoff-gwas-reproducibility/Results"
+# ref_gene_file = "/home/groups/sabatti/.julia/dev/ghostknockoff-gwas-reproducibility/data/refGene_hg38.txt"
+# out_dir = "/home/groups/sabatti/.julia/dev/ghostknockoff-gwas-reproducibility/Results"
 
 
 library(data.table)
@@ -75,7 +75,7 @@ x1_sug <- x1_sug[!is.na(x1_sug$p.marginal),]
 if(nrow(x1_sug)>2){
   
   #get individual z-scores
-  Zscores<-as.data.frame(fread('/oak/stanford/groups/zihuai/ESGWAS_lasso/Z_scores/AD_meta/AD_Zscores_Meta.txt'))
+  Zscores<-as.data.frame(fread(zscores_file))
   temp.Zscores<-Zscores[match(x1_sug[,'rsid'],Zscores[,'rsid']),9:18]
   temp.Zscores<-cbind(temp.Zscores,pnorm(as.matrix(abs(temp.Zscores)),lower.tail=F))
   colnames(temp.Zscores)<-c(paste0('z.',study.names[1:10]),paste0('p.',study.names[1:10]))
