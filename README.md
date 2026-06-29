@@ -1,4 +1,4 @@
-# GhostKnockoff GWAS reproducibility
+# Reproducibility scripts for analyzing GWAS summary statistics via GhostKnockoffs
 
 :warning: Note these source codes are *purely for review and reproducibility purposes*. Users interested in running the overall pipeline should proceed to the main [GhostKnockoffGWAS page](https://github.com/biona001/GhostKnockoffGWAS). 
 
