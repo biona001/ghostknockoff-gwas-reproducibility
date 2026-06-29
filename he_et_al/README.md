@@ -1,10 +1,10 @@
-# GhostKnockoff GWAS reproducibility
+# CIT-Lasso reproducibility
 
 This repo contains source codes used in the paper **Beyond guilty by association at scale: searching for causal variants on the basis of genome-wide summary statistics** by He et al. 
 
 ![fig1](../Results/Rect_Manhtn.GhostKnockoffLasso_group_Meta-analysis.jpg)
 
-Note that these source codes are *purely for review and reproducibility purposes*. Users interested in running the overall pipeline should proceed to the main [GhostKnockoffGWAS page](https://github.com/biona001/GhostKnockoffGWAS). 
+Note that these source codes are *purely for review and reproducibility purposes*. Users interested in running the overall pipeline should proceed to the main [CIT-Lasso page](https://github.com/biona001/CITLasso). 
 
 ## Table of content
 
